@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notification Api</title>
+</head>
+<body>
+    <h1>Notification api</h1>
+    <p id="output"></p>
+    <!-- js -->
+    <script>
+//    notification Event - click , Error, show, close
+if('Notification' in window){
+    if(Notification.permission ==="granted"){
+    // if true lets creat a Notification
+   doNotify()
+ }else {
+    // notification denied
+    Notification.requestPermission()
+    .then(function(result){
+        console.log(result);
+        if(Notification.permission =="granted"){
+            doNotify();
+        }
+    })
+    .catch( (err) => {
+        console.log(err);
+    })
+ }
+}
+function doNotify(){
+    let title = 'The Title';
+    let t = Date.now() + 120000;
+    let option = {
+        body: 'Hello from depth of javascript',
+        data: {
+            prop:123, prop:"steve"
+        },
+        lang:"en-CA"
+        timestamp: t,
+        vibrate: [100, 200, 100]
+        
+    }
+    let notif = new Notification(title, option);
+    notif.addEventListener('show', function(ev){
+        console.log('show', ev.currentTarget.data);
+    });
+    notif.addEventListener('close',function(ev){
+        console.log('close',ev.currentTarget.body);
+    })
+    setTimeout(notif.close.bind(notif), 3000);
+}
+</script>
+</body>
+</html>
